@@ -1,0 +1,12 @@
+.grey {
+	background-color: #B3E9C7;
+}
+
+.timer-container {
+	height: 50vh;
+	width: 100%;
+}
+
+.timer-content {
+	padding: 20%;
+}

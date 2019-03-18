@@ -1,0 +1,96 @@
+<html lang="en">
+	<head>
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/organize.css" rel="stylesheet">
+
+		<script>
+			var h1 = [], start = [], stop = [], clear = [], seconds = [], minutes = [], hours = [], t = [];
+
+		    function startFun()
+		    {
+		    	h1 = document.getElementsByTagName('h1');
+			    start = document.getElementsByName('start');
+			    stop = document.getElementsByName('stop');
+			    clear = document.getElementsByName('clear');
+			    seconds = [0,0,0,0]; minutes = [0,0,0,0]; hours = [0,0,0,0];
+		    }
+
+			function add(index) {
+			    seconds[index]++;
+			    if (seconds[index] >= 60) {
+			        seconds[index] = 0;
+			        minutes[index]++;
+			        if (minutes[index] >= 60) {
+			            minutes[index] = 0;
+			            hours[index]++;
+			        }
+			    }
+			    
+			    h1[index].textContent = (hours[index] ? (hours[index] > 9 ? hours[index] : "0" + hours[index]) : "00") + ":" + (minutes[index] ? (minutes[index] > 9 ? minutes[index] : "0" + minutes[index]) : "00") + ":" + (seconds[index] > 9 ? seconds[index] : "0" + seconds[index]);
+
+			    timer(index);
+			}
+
+			function timer(index) {
+			    t[index] = setTimeout(function() {add(index)}, 1000);
+			}
+
+			/* Stop button */
+			function stopTimer(index) {
+			    clearTimeout(t[index]);
+			}
+
+			/* Clear button */
+			function clearTimer(index) {
+			    h1[index].textContent = "00:00:00";
+			    seconds[index] = 0; minutes[index] = 0; hours[index] = 0;
+			}
+		</script>
+	</head>
+
+	<body onload="startFun()">
+		<div class="container-fluid text-center">
+			<div class="row">
+				<div class="col-md-6 grey timer-container">
+					<div class="timer-content">
+						<h3>Work Timer</h3>
+						<h1 id="h1"><time>00:00:00</time></h1>
+						<button class="btn btn-success" name="start" onclick="timer(0)">start</button>
+						<button class="btn btn-danger" name="stop" onclick="stopTimer(0)">stop</button>
+						<button class="btn btn-primary" name="clear" onclick="clearTimer(0)">clear</button>
+					</div>
+				</div>
+
+				<div class="col-md-6 timer-container">
+					<div class="timer-content">
+						<h3>Commute Timer</h3>
+						<h1 id="h1"><time>00:00:00</time></h1>
+						<button class="btn btn-success" id="start" onclick="timer(1)">start</button>
+						<button class="btn btn-danger" id="stop" onclick="stopTimer(1)">stop</button>
+						<button class="btn btn-primary" id="clear" onclick="clearTimer(1)">clear</button>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 timer-container">
+					<div class="timer-content">
+						<h3>Productive Timer</h3>
+						<h1 id="h1"><time>00:00:00</time></h1>
+						<button class="btn btn-success" id="start" onclick="timer(2)">start</button>
+						<button class="btn btn-danger" id="stop" onclick="stopTimer(2)">stop</button>
+						<button class="btn btn-primary" id="clear" onclick="clearTimer(2)">clear</button>
+					</div>
+				</div>
+				<div class="col-md-6 grey timer-container">
+					<div class="timer-content">
+						<h3>Other Timer</h3>
+						<h1 id="h1"><time>00:00:00</time></h1>
+						<button class="btn btn-success" id="start" onclick="timer(3)">start</button>
+						<button class="btn btn-danger" id="stop" onclick="stopTimer(3)">stop</button>
+						<button class="btn btn-primary" id="clear" onclick="clearTimer(3)">clear</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -55,12 +55,9 @@
 
 			/* Clear button */
 			function clearTimer(index) {
-				if (confirm("Are you sure you want to clear the timer?"))
-				{
-					stopTimer(index);
-			    	h1[index].textContent = "00:00:00";
-			    	seconds[index] = 0; minutes[index] = 0; hours[index] = 0;
-			    }
+				stopTimer(index);
+			    h1[index].textContent = "00:00:00";
+			    seconds[index] = 0; minutes[index] = 0; hours[index] = 0;
 			}
 		</script>
 	</head>

@@ -3,7 +3,8 @@
 }
 
 .timer-container {
-	height: 100vh;
+	height: 50vh;
+	width: 100%;
 }
 
 .timer-content {

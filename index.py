@@ -14,11 +14,7 @@ if (not data.has_key("paused_times")):
 	{"last_pressed":0, "time_delta":0, "paused":False},
 	{"last_pressed":0, "time_delta":0, "paused":False},
 	{"last_pressed":0, "time_delta":0, "paused":False}] #contains start times
-'''
-@bottle.route('/')
-def index():
-    return ""
-'''
+	
 def start_pressed(i):
 	if (data["start_times"][i] == 0):
 		data["start_times"][i] = datetime.now()
@@ -31,6 +27,13 @@ def start_pressed(i):
 def paused_pressed(i):
 	data["paused_times"][i]["paused"] = True
 	data["paused_times"][i]["last_pressed"] = datetime.now()
+
+@bottle.route('/')
+def index():
+	
+    	
+
+
 
 start_pressed(0)
 time.sleep(1)

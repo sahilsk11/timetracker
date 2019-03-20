@@ -1,12 +1,20 @@
+% import function
 <html lang="en">
 	<head>
-		<link href="css/bootstrap.css" rel="stylesheet">
-		<link href="css/organize.css" rel="stylesheet">
+
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 		 <meta name="description" content="Keep track of time">
+  		<meta name="author" content="Sahil Kapur">
+		<link href="static/css/bootstrap.css" rel="stylesheet">
+		<link href="static/css/organize.css" rel="stylesheet">
 		<title>Time Tracker</title>
 
-		<link href="images/icon.png" rel="icon">
+		<link href="static/images/icon.png" rel="icon">
+        <script src="static/js/XHRequest.js"></script>
+
 		<script>
-			var h1 = [], start = [], stop = [], clear = [], seconds = [], minutes = [], hours = [], t = [], running = [false, false, false, false];
+			var h1 = [], start = [], stop = [], clear = [], seconds = [], minutes = [], hours = [], t = [], running = [];
 
 		    function startFun()
 		    {
@@ -14,7 +22,24 @@
 			    start = document.getElementsByName('start');
 			    stop = document.getElementsByName('stop');
 			    clear = document.getElementsByName('clear');
-			    seconds = [0,0,0,0]; minutes = [0,0,0,0]; hours = [0,0,0,0];
+			    seconds = {{data["times"]["seconds"]}};
+			    minutes = {{data["times"]["minutes"]}};
+			    hours = {{data["times"]["hours"]}};
+			    running = {{data["paused"]}};
+
+			    var index;
+			    var timers = document.getElementsByName("timer");
+			    for (index = 0; index < timers.length; index++) {
+			    	var timer = timers[index];
+			    	timer.innerHTML = hours[index] + ":" + minutes[index] + ":" + seconds[index];
+			    	index++;
+			    }
+			    for (index = 0; index < 4; index++) {
+			    	if (running[index])
+			    	{
+			    		startTimer(index);
+			    	}
+			    }
 		    }
 
 			function add(index) {
@@ -38,26 +63,44 @@
 			{
 				if (!running[index])
 				{
-					timer(index);
+					XHRequest.createRequest({
+	                    success: function() {timer(index)},
+	                    params: {
+	                        command: "start",
+	                        index: index
+	                    },
+	                    url: "request_handler.py"
+                	});
 				}
 			}
 
 			function timer(index) {
 		    	t[index] = setTimeout(function() {add(index)}, 1000);
-		    	running[index] = true;
+		    	running[index] = 1;
 			}
 
 			/* Stop button */
 			function stopTimer(index) {
-				running[index] = false;
+				running[index] = 0;
 			    clearTimeout(t[index]);
+			    XHRequest.createRequest({
+                    success: function() { },
+                    params: {
+                        command: "pause",
+                        index: index
+                    },
+                    url: "request_handler.py"
+            	});
 			}
 
 			/* Clear button */
 			function clearTimer(index) {
-				stopTimer(index);
-			    h1[index].textContent = "00:00:00";
-			    seconds[index] = 0; minutes[index] = 0; hours[index] = 0;
+				if (confirm("Are you sure you want to clear the timer?"))
+				{
+					stopTimer(index);
+			    	h1[index].textContent = "00:00:00";
+			    	seconds[index] = 0; minutes[index] = 0; hours[index] = 0;
+			    }
 			}
 		</script>
 	</head>
@@ -68,7 +111,7 @@
 				<div class="col-md-6 grey timer-container">
 					<div class="timer-content">
 						<h3>Work Timer</h3>
-						<h1 id="h1"><time>00:00:00</time></h1>
+						<h1 id="h1"><time name="timer">00:00:00</time></h1>
 						<button class="btn btn-success" name="start" onclick="startTimer(0)">start</button>
 						<button class="btn btn-danger" name="stop" onclick="stopTimer(0)">stop</button>
 						<button class="btn btn-primary" name="clear" onclick="clearTimer(0)">clear</button>
@@ -78,7 +121,7 @@
 				<div class="col-md-6 timer-container">
 					<div class="timer-content">
 						<h3>Commute Timer</h3>
-						<h1 id="h1"><time>00:00:00</time></h1>
+						<h1 id="h1"><time name="timer">00:00:00</time></h1>
 						<button class="btn btn-success" id="start" onclick="startTimer(1)">start</button>
 						<button class="btn btn-danger" id="stop" onclick="stopTimer(1)">stop</button>
 						<button class="btn btn-primary" id="clear" onclick="clearTimer(1)">clear</button>
@@ -89,7 +132,7 @@
 				<div class="col-md-6 timer-container">
 					<div class="timer-content">
 						<h3>Productive Timer</h3>
-						<h1 id="h1"><time>00:00:00</time></h1>
+						<h1 id="h1"><time name="timer">00:00:00</time></h1>
 						<button class="btn btn-success" id="start" onclick="startTimer(2)">start</button>
 						<button class="btn btn-danger" id="stop" onclick="stopTimer(2)">stop</button>
 						<button class="btn btn-primary" id="clear" onclick="clearTimer(2)">clear</button>
@@ -98,7 +141,7 @@
 				<div class="col-md-6 grey timer-container">
 					<div class="timer-content">
 						<h3>Other Timer</h3>
-						<h1 id="h1"><time>00:00:00</time></h1>
+						<h1 id="h1"><time name="timer">00:00:00</time></h1>
 						<button class="btn btn-success" id="start" onclick="startTimer(3)">start</button>
 						<button class="btn btn-danger" id="stop" onclick="stopTimer(3)">stop</button>
 						<button class="btn btn-primary" id="clear" onclick="clearTimer(3)">clear</button>

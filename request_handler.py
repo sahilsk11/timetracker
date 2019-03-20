@@ -12,14 +12,14 @@ data = shelve.open("time_data.shelve", writeback=True)
 def start_pressed(i):
     if (data["start_times"][i] == 0):
         data["start_times"][i] = datetime.now()
-        data["paused_times"][i]["paused"] = False
-    elif (data["paused_times"][i]["paused"]):
+        data["paused_times"][i]["paused"] = 0
+    elif (data["paused_times"][i]["paused"] == 1):
         data["start_times"][i] += datetime.now() - data["paused_times"][i]["last_pressed"]
-        data["paused_times"][i]["paused"] = False
+        data["paused_times"][i]["paused"] = 0
     
 def paused_pressed(i):
-    if (not data["paused_times"][i]["paused"]):
-        data["paused_times"][i]["paused"] = True
+    if (data["paused_times"][i]["paused"] == 0):
+        data["paused_times"][i]["paused"] = 1
         data["paused_times"][i]["last_pressed"] = datetime.now()
 
 

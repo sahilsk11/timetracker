@@ -29,6 +29,7 @@
 
 			    var index;
 			    var timers = document.getElementsByName("timer");
+			    alert(timers.length);
 			    for (index = 0; index < timers.length; index++) {
 			    	var timer = timers[index];
 			    	timer.innerHTML = hours[index] + ":" + minutes[index] + ":" + seconds[index];

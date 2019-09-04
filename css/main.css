@@ -1,0 +1,21 @@
+.grey {
+	background-color: #B3E9C7;
+}
+
+.timer-container {
+	height: 50vh;
+	width: 100%;
+}
+
+.timer-content {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.btn {
+    margin: 3px;
+}

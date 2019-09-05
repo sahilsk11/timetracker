@@ -17,8 +17,15 @@ class Timer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { seconds: 0, minutes: 0, hours: 0 };
+        this.state = { startDate: null, time: "00:00:00", timerState: null };
+
         this.startTimer = this.startTimer.bind(this);
+        this.pause = this.pause.bind(this);
+        this.tick = this.tick.bind(this);
+
+        this.pausedTime = 0;
+        this.intervalID = null;
+        this.lastPaused = null;
     }
 
     determineClasses() {
@@ -30,32 +37,28 @@ class Timer extends React.Component {
     }
 
     startTimer() {
-        this.setState({ startDate: new Date().getTime(), running: true });
-        this.componentDidMount();
-    }
-
-    componentDidMount() {
-        if (this.state.running) {
-            alert();
-            setInterval(() => this.tick(), 1000);
+        if (this.state.timerState == "paused") {
+            this.pausedTime += new Date().getTime() - this.lastPaused;
+            this.setState({ timerState: "running" });
         } else {
-            console.log(this.state.running);
+            this.setState({ startDate: new Date().getTime(), timerState: "running" });
+        }
+        if (this.state.timerState != "running") {
+            this.intervalID = setInterval(() => this.tick(), 1000);
         }
     }
 
     tick() {
-        var difference = this.state.startDate - new Date().getTime();
-        this.state.hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        this.state.seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        var currentTime = new Date().getTime();
+        var difference = currentTime - this.pausedTime - this.state.startDate;
+        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((difference / 1000) % 60);
+        this.updateTime(hours, minutes, seconds);
     }
 
-    printTime() {
-        var hours = this.state.hours;
-        var minutes = this.state.minutes;
-        var seconds = this.state.seconds;
-
-        var hoursStr, minutesStr, secondsStr;
-
+    updateTime(hours, minutes, seconds) {
+        var hoursStr = hours, minutesStr = minutes, secondsStr = seconds;
         if (hours < 10) {
             hoursStr = "0" + hours;
         }
@@ -65,7 +68,28 @@ class Timer extends React.Component {
         if (seconds < 10) {
             secondsStr = "0" + seconds;
         }
-        return hoursStr + ":" + minutesStr + ":" + secondsStr;
+        this.setState({ time: hoursStr + ":" + minutesStr + ":" + secondsStr });
+    }
+
+    pause() {
+        if (this.state.timerState != "paused") {
+            this.setState({ timerState: "paused" });
+            this.lastPaused = new Date().getTime();
+        }
+        clearInterval(this.intervalID);
+    }
+
+    clear() {
+        if (confirm("Are you sure you want to clear " + this.props.title + "?")) {
+            this.pause();
+            this.timerState = null;
+            this.lastPaused = null;
+            this.pausedTime = 0;
+            this.setState({ time: "00:00:00", startDate: null });
+            //console.log(this.state.time);
+        } else {
+            console.log("Clear cancelled");
+        }
     }
 
     render() {
@@ -73,10 +97,10 @@ class Timer extends React.Component {
             <div className={this.determineClasses()}>
                 <div className="timer-content">
                     <h3>{this.props.title}</h3>
-                    <h1 id="h1"><time>{this.printTime()}</time></h1>
+                    <h1 id="h1"><time>{this.state.time}</time></h1>
                     <button className="btn btn-success" onClick={() => this.startTimer()}>start</button>
-                    <button className="btn btn-danger" >stop</button>
-                    <button className="btn btn-primary">clear</button>
+                    <button className="btn btn-danger" onClick={() => this.pause()}>stop</button>
+                    <button className="btn btn-primary" onClick={() => this.clear()}>clear</button>
                 </div>
             </div>
         );

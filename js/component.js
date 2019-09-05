@@ -92,6 +92,15 @@ class Timer extends React.Component {
         }
     }
 
+    displayButtons() {
+        var btnClass = "beautiful-btn";
+        return (
+            <button className={btnClass}>
+                start
+            </button>
+        );
+    }
+
     render() {
         return (
             <div className={this.determineClasses()}>

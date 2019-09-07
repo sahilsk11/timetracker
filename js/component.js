@@ -1,5 +1,18 @@
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.setCode();
+    }
+
+    setCode() {
+        var url = window.location.href;
+        var code = new URL(url).searchParams.get("id");
+        console.log(code);
+        this.code = code;
+    }
+
     render() {
+        this.setCode();
         return (<div className="container-fluid text-center">
             <div className="row">
                 <Timer title="Working" timerID="0" />
@@ -37,18 +50,20 @@ class Timer extends React.Component {
     }
 
     startTimer() {
+        if (this.state.startDate == null) {
+            this.setState({ startDate: new Date().getTime() });
+        }
         if (this.state.timerState == "paused") {
             this.pausedTime += new Date().getTime() - this.lastPaused;
-            this.setState({ timerState: "running" });
-        } else {
-            this.setState({ startDate: new Date().getTime(), timerState: "running" });
         }
         if (this.state.timerState != "running") {
             this.intervalID = setInterval(() => this.tick(), 1000);
+            this.setState({ timerState: "running" });
         }
     }
 
     tick() {
+        console.log("hi");
         var currentTime = new Date().getTime();
         var difference = currentTime - this.pausedTime - this.state.startDate;
         var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

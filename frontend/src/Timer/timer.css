@@ -1,0 +1,33 @@
+.timer-container {
+  /*position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  */
+  width: 420px;
+  height: 200px;
+}
+
+.timer-label {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.timer {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  margin-top: 15px;
+  font-size: 50px;
+}
+
+.timer-split-time {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  margin-top: 10px;
+  font-size: 20px;
+}

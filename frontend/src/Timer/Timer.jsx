@@ -4,15 +4,18 @@ import "./timer.css";
 export default function Timer({ label, startTime, pausedTime, resumedTime, isPaused, onClick }) {
   const [time, updateTime] = useState("");
   const [splitTime, updateSplitTime] = useState("");
-
+  console.log("re-render");
   useEffect(() => {
+    console.log('paused: ' + isPaused.toString());
+    console.log('start time: ' + startTime);
+
     if (isPaused) {
-      if (startTime.toString() === new Date(null).toString()) {
+      if (startTime == null) {
         updateTime("00:00:00");
       } else {
         updateTime(calculateStopwatchValue(pausedTime - startTime));
       }
-      if (resumedTime.toString() === new Date(null).toString()) {
+      if (resumedTime == null) {
         updateSplitTime("00:00:00");
       } else {
         updateSplitTime(calculateStopwatchValue(new Date() - resumedTime));
@@ -21,7 +24,7 @@ export default function Timer({ label, startTime, pausedTime, resumedTime, isPau
       updateTime(calculateStopwatchValue(new Date() - startTime));
       updateSplitTime(calculateStopwatchValue(new Date() - resumedTime));
     }
-  }, []);
+  }, [startTime]);
 
   useInterval(() => {
     updateTime(calculateStopwatchValue(new Date() - startTime));

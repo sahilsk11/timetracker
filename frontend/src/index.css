@@ -1,4 +1,25 @@
 body {
   margin: 0px;
   font-family: 'Heebo', sans-serif;
+  background-color: #13171D;
+}
+
+.clear-btn {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  background-color: whitesmoke;
+  border: none;
+  outline: none;
+  position: absolute;
+  left: 50%;
+  bottom: 10vh;
+  transform: translateX(-50%);
+  font-size: 15px;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+
+.clear-btn:hover {
+  background-color: rgba(245, 245, 245, 0.795);
 }

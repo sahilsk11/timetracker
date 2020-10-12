@@ -8,8 +8,8 @@ const dbHandler = new DBConnection(["time_tracker"]);
 
 async function main() {
   await dbHandler.initClients();
-  app.listen(8080, () => {
-    console.log("Server running on port 8080");
+  app.listen(8083, () => {
+    console.log("Server running on port 8083");
   })
 }
 
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 app.get("/getStates", async (req, res) => {
   const collection = await dbHandler.getCollection("time_tracker", "trackers");
-  const result = await collection.find().toArray();
+  const result = await collection.find({"hidden": false}).toArray();
   res.json({ timers: result });
 });
 
@@ -77,7 +77,7 @@ app.post("/stopTimer", async (req, res) => {
   res.json(result);
 });
 
-app.get("/clearTimer", async (req, res) => {
+app.post("/clearTimer", async (req, res) => {
   const body = req.body;
   const { timerName } = body;
   const collection = await dbHandler.getCollection("time_tracker", "trackers");

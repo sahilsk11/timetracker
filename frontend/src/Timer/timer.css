@@ -1,9 +1,8 @@
 .timer-container {
-  /*position: absolute;
+  position: absolute;
   left: 50%;
   top: 40%;
   transform: translate(-50%, -50%);
-  */
   width: 420px;
   height: 200px;
 }
@@ -14,6 +13,8 @@
   padding: 0px;
   font-size: 30px;
   font-weight: 600;
+  color: rgb(230, 230, 230);
+  font-family: 'Playfair Display', serif;
 }
 
 .timer {
@@ -22,6 +23,9 @@
   padding: 0px;
   margin-top: 15px;
   font-size: 50px;
+  color: rgb(153, 153, 153);
+  font-weight: 300;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .timer-split-time {
@@ -30,4 +34,7 @@
   padding: 0px;
   margin-top: 10px;
   font-size: 20px;
+  font-weight: 300;
+  color: grey;
+  font-family: 'Open Sans', sans-serif;
 }

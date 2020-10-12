@@ -9,9 +9,10 @@ function App() {
   const [refreshFlag, updateRefreshFlag] = useState(0);
   const [timers, updateTimers] = useState(null);
   const [timerName, updateTimerName] = useState(null);
+  const endpoint = process.env.NODE_ENV === "production" ? "https://time.sahilkapur.com/server" : "http://localhost:8083";
 
   useEffect(() => {
-    fetch("http://localhost:8083/getStates").then(response => response.json()).then(data => {
+    fetch(endpoint + "/getStates").then(response => response.json()).then(data => {
       let timerElements = [];
       data.timers.forEach(timer => {
         const onClickFunction = timer.is_paused ? startTimer : stopTimer;
@@ -33,7 +34,7 @@ function App() {
 
 
   const startTimer = ({ name }) => {
-    fetch("http://localhost:8083/startTimer", {
+    fetch(endpoint + "/startTimer", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ function App() {
   }
 
   const stopTimer = ({ name }) => {
-    fetch("http://localhost:8083/stopTimer", {
+    fetch(endpoint + "/stopTimer", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -64,16 +65,16 @@ function App() {
     <div>
       {timers}
       <ClearButton name={timerName} refreshFlag={refreshFlag} updateRefreshFlag={updateRefreshFlag} />
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet" />
-
     </div>
   );
 
 }
 
 function ClearButton({ name, updateRefreshFlag, refreshFlag }) {
+  const endpoint = process.env.NODE_ENV === "production" ? "https://time.sahilkapur.com/server" : "http://localhost:8083";
+
   const clearTimer = () => {
-    fetch("http://localhost:8083/clearTimer", {
+    fetch(endpoint + "/clearTimer", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
